@@ -1,0 +1,40 @@
+updateDateGrid(selectedDay)
+    When it runs:
+        At the start of the program, with the current day
+        When the month is changed, with the first of the month
+        When the user selects a non-month day
+    What it does:
+        Figures out the first Sunday it will consider
+        Loops through all the weeks and days of the date grid 
+        Colors based on whether the day is in the month
+        Calls selectDay to select a day 
+
+translateGridToDatetime()
+    When it runs:
+        When selecting a day from the grid
+    What it does:
+        Uses knowledge about the first day in the grid to figure out datetime of week2day3
+
+selectDay()
+    When it runs:
+        When selecting a day from the grid, or when updateDateGrid is called
+    What it does:
+        Calls translateGridToDatetime to figure out day
+        If the day is outside the month, calls updateDateGrid, recalls so just return
+        --- else
+        colors the day in dategrid by applying a class
+        accesses the database to display data on the right
+
+displayTaskData()
+    Do later
+
+
+
+selectFromCoordinates()
+    Uses week# and day# to return the element with those classes
+
+
+
+Global Variables Required:
+    current month
+    first day in dategrid

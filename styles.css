@@ -1,0 +1,230 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+* {
+    font-family: Inter, sans-serif;
+    --scrollbar-width: 17px;
+}
+
+:root {
+    scroll-behavior: smooth;
+}
+
+.everything-container {
+    background: linear-gradient(135deg, #153677, #4e085f);
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.app-container{
+    background-color: white;
+    height: 50vh;
+    width: 80vw;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    --gutter: 8px;
+    --half-gutter: calc(var(--gutter) / 2);
+    --double-gutter: calc(var(--gutter) * 2);
+    --threefourth-gutter: calc(var(--gutter) * 0.75);
+    --threehalf-gutter: calc(var(--gutter) * 1.5);
+    --three-gutter: calc(var(--gutter) * 3);
+    --four-gutter: calc(var(--gutter) * 4);
+    border-radius: var(--four-gutter);
+    padding: var(--three-gutter);
+}
+
+.calendar-section {
+    display: flex;
+    flex-flow: column nowrap;
+    flex-grow: 1;
+    height: 100%;
+}
+
+.month-header {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    padding: 0 var(--four-gutter);
+    margin-bottom: var(--gutter);
+    font-size: var(--three-gutter);
+    font-weight: bold;
+}
+
+.month-week-divider {
+    background-color: gray;
+    height: var(--threefourth-gutter);
+    width: calc(100% - var(--threehalf-gutter));
+    border-radius: var(--gutter);
+    position: relative;
+    left: var(--gutter);
+}
+
+.week-header {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+    margin: var(--half-gutter) 0;
+    width: calc(100% + var(--gutter));
+    position: relative;
+    right: var(--half-gutter);
+    font-weight: 700;
+    font-size: calc(var(--gutter) * 2.25);
+}
+
+.week-header>div {
+    text-align: center;
+}
+
+.date-section {
+    flex-grow: 1;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: var(--gutter);
+}
+
+.week {
+    display: flex;
+    flex-flow: row nowrap;
+    flex-grow: 1;
+    gap: var(--gutter);
+    height: calc(100% - 6 * var(--gutter) / 7);
+}
+
+.day {
+    background-color: lightgray;
+    flex-grow: 1;
+    border-radius: var(--double-gutter);
+    width: calc(100% - 6 * var(--gutter) / 7);
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    padding: var(--gutter);
+}
+
+.day-text {
+    font-weight: 700;
+    font-size: var(--double-gutter);
+}
+
+.non-month-day {
+    background-color: lightslategray;
+}
+
+.selected-day {
+    background-color: blue;
+}
+
+.section-divider {
+    background-color: gray;
+    width: var(--threefourth-gutter);
+    height: 100%;
+    border-radius: var(--half-gutter);
+    margin: 0 var(--threehalf-gutter);
+}
+
+.todo-section {
+    flex-grow: 1;
+    height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    max-width: 40%;
+    overflow: hidden;
+}
+
+.day-title {
+    font-size: var(--three-gutter);
+    font-weight: 600;
+}
+
+.add-task-button {
+    height: calc(4 * var(--gutter));
+    background-color: lightgray;
+    border-radius: var(--double-gutter);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.gradient-positioner {
+    width: 100%;
+    height: 0px;
+    position: relative;
+    top: calc(0.5 * var(--gutter));
+    overflow: visible;
+}
+
+.gradient {
+    position: absolute;
+    height: var(--double-gutter);
+    background: linear-gradient(180deg, rgba(255,255,255,1), rgba(255,255,255,0));
+    width: 100%;
+}
+
+.bottom-gradient-positioner {
+    width: 100%;
+    height: 0px;
+    position: relative;
+    bottom: calc(3 * var(--gutter));
+    overflow: visible;
+}
+
+.bottom-gradient {
+    position: absolute;
+    height: var(--three-gutter);
+    background: linear-gradient(0deg, rgba(255,255,255,1), rgba(255,255,255,0));
+    width: 100%;
+}
+
+.task-section {
+    flex-grow: 1;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    width: calc(100% + var(--scrollbar-width));
+    padding-top: var(--half-gutter);
+    margin-top: var(--half-gutter);
+}
+
+.task {
+    font-size: var(--double-gutter);
+    padding: var(--half-gutter);
+    border-width: var(--half-gutter);
+    border-color: lightgrey;
+    border-style: solid;
+    border-radius: calc(var(--gutter) * 2);
+    background-color: white;
+    width: 100%;
+    margin-top: var(--gutter);
+    display: flex;
+    align-items: center;
+}
+
+.task-icon {
+    height: calc(100% - var(--half-gutter));
+    width: calc(var(--gutter) * 2.5);
+    border-radius: var(--threehalf-gutter);
+    border: var(--half-gutter) solid blue;
+    margin-left: calc(var(--gutter) * 0.25);
+    margin-right: var(--gutter);
+}
+
+.task-delete-icon {
+    height: calc(100% - var(--half-gutter));
+    width: calc(var(--gutter) * 2.5);
+    border-radius: var(--threehalf-gutter);
+    border: var(--half-gutter) solid red;
+    margin-right: calc(var(--gutter) * 0.25);
+    margin-left: var(--gutter);
+}
+
+.task-content {
+    max-width: 100%;
+    overflow-wrap: break-word;
+    flex-grow: 1;
+}
