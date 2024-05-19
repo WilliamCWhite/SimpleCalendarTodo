@@ -1,33 +1,25 @@
 const weekClassName = "week";
 const dayClassName = "day";
 const selectedDateCellClass = "selected-day";
+const otherMonthClass = "non-month-day";
 
-let initializing = true;
 let firstDatetimeInGrid = new Date();
+let globalSelectedDatetime = new Date();
 let currentMonth = -1;
 
 function selectDate(selectedDatetime) {
+    globalSelectedDatetime.setTime(selectedDatetime.getTime());
+
     if (selectedDatetime.getMonth() !== currentMonth) {
         updateGrid(selectedDatetime);
         return;
     }
-
-    let distanceFromFirstCell = selectedDatetime.getDate() - firstDatetimeInGrid.getDate() + 1;
-    let week = distanceFromFirstCell / 7 + 1;
-    let day = distanceFromFirstCell % 7;
-
-    let dateCell = translateCoordinatesToElement(week, day);
-    dateCell.classList.add(selectedDateCellClass);
 }
 
 function updateGrid(selectedDatetime) {
     currentMonth = selectedDatetime.getMonth();
 
-    console.log(findFirstSunday(selectedDatetime).getDate());
-
-    console.log(firstDatetimeInGrid);
-
-    firstDatetimeInGrid.setDate(findFirstSunday(selectedDatetime).getDate());
+    firstDatetimeInGrid.setTime(findFirstSunday(selectedDatetime).getTime());
 
     console.log(firstDatetimeInGrid);
 
@@ -36,6 +28,8 @@ function updateGrid(selectedDatetime) {
             updateGridCell(week, day);
         }
     }
+
+    selectDate(selectedDatetime);
 }
 
 function updateGridCell(week, day) {
@@ -46,32 +40,40 @@ function updateGridCell(week, day) {
 
     dateText.innerHTML = gridDatetime.getDate();
 
+    if (gridDatetime.getMonth() !== currentMonth) {
+        dateCell.classList.add(otherMonthClass);
+    }
+
+    if (sameMonthDate(gridDatetime, globalSelectedDatetime)) {
+        dateCell.classList.add(selectedDateCellClass);
+    }
+
     //! Access database for content
 
-    
-    
+}
+
+function sameMonthDate(datetime1, datetime2) {
+    if (datetime1.getDate() === datetime2.getDate() && datetime1.getMonth() === datetime2.getMonth()) {
+        return true;
+    }
+    return false;
 }
 
 function findFirstSunday(selectedDatetime) {
-    console.log(selectedDatetime);
-
     let workingDatetime = new Date();
-    let currentDate = selectedDatetime.getDate();
-    workingDatetime.setDate(selectedDatetime.getDate() - (currentDate - 1));
+    workingDatetime.setTime(selectedDatetime.getTime());
+    workingDatetime.setDate(1);
 
-    console.log(workingDatetime);
-
-    let currentDay = workingDatetime.getDay();
-    workingDatetime.setDate(workingDatetime.getDate() - currentDay);
-
-    console.log(workingDatetime);
+    let dayIndex = workingDatetime.getDay();
+    workingDatetime.setDate(workingDatetime.getDate() - dayIndex);
 
     return workingDatetime;
 }
 
 function translateGridToDatetime(week, day) {
     let output = new Date();
-    output.setDate(firstDatetimeInGrid.getDate() + ( (week - 1) * 7) + day - 1);
+    output.setTime(firstDatetimeInGrid.getTime());
+    output.setDate(output.getDate() + ( (week - 1) * 7) + day - 1);
     return output;
 }
 
