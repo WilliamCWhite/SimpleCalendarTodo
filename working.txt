@@ -38,3 +38,10 @@ selectFromCoordinates()
 Global Variables Required:
     current month
     first day in dategrid
+
+
+Ok current T
+.week.week$>.day.day$>
+
+What must clicking the days do?
+    isolate the week# and day# classes, convert to grid, and convert that to datetime to select the right date

@@ -4,6 +4,8 @@
     --scrollbar-width: 17px;
 }
 
+
+
 :root {
     scroll-behavior: smooth;
 }
@@ -107,6 +109,11 @@
 .day-text {
     font-weight: 700;
     font-size: var(--double-gutter);
+    pointer-events: none;
+}
+
+.day-content {
+    pointer-events: none;
 }
 
 .non-month-day {
@@ -224,7 +231,19 @@
 }
 
 .task-content {
-    max-width: 100%;
-    overflow-wrap: break-word;
     flex-grow: 1;
+    flex-basis: auto;
+    word-break: break-word;
+    max-width: calc(100% - 7.5 * var(--gutter));
+    border: 0;
+    outline: 0;
 }
+
+.checked-task {
+    text-decoration: line-through;
+}
+
+.checked-task-icon {
+    background-color: blue;
+}
+
