@@ -57,3 +57,14 @@ ehh just did a basic autosave
 
 Now I want to make a popup when you click on the month
 Actually first just need to make next and previous month methods        
+
+How would I do a popup window?
+Maybe one absolutetly positioned div that does the blur background
+And another absolutely positioned div that actually contains the functionality and is on top z-axis wise
+
+Interjection: setting the best aspect ratio
+Always want whole cell to be 16:9
+if 16xWIDTH is smaller than 9xHEIGHT, base dimensions off of vw
+if 9xHEIGHT is smaller than 16xWIDTH, base dimensions off of vh
+once you go beyond 1600px or 900px, be more careful
+once you go below 800px or 450px, stop resizing

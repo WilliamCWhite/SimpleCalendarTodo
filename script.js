@@ -9,6 +9,8 @@ const monthArray = ["January", "February", "March", "April", "May", "June", "Jul
 const autosaveTimerMS = 5000;
 const previousMonthButton = document.getElementById("previous-month-button");
 const nextMonthButton = document.getElementById("next-month-button");
+const bodyElement = document.getElementById("body");
+const everythingContainer = document.getElementById("everything-container");
 
 const taskClass = "task";
 const taskIconClass = "task-icon";
@@ -16,6 +18,7 @@ const taskContentClass = "task-content";
 const taskDeleteIconClass = "task-delete-icon";
 const checkedTaskClass = "checked-task";
 const checkedTaskIconClass = "checked-task-icon";
+
 
 let firstDatetimeInGrid = new Date();
 let globalSelectedDatetime = new Date();
@@ -125,6 +128,13 @@ function selectDate(selectedDatetime) {
 
     loadTaskData(globalSelectedDatetime);
 }
+
+monthTitle.addEventListener("click", function(e) {
+    console.log("month title clicked");
+    let popupElement = document.createElement("div");
+    popupElement.classList.add("blur-popup");
+    everythingContainer.insertAdjacentElement('afterend', popupElement);
+}, false);
 
 previousMonthButton.addEventListener("click", function(e) {
     if (currentMonth == 0) {
