@@ -45,3 +45,11 @@ Ok current T
 
 What must clicking the days do?
     isolate the week# and day# classes, convert to grid, and convert that to datetime to select the right date
+
+
+saving data: have to set item based on a time code
+
+
+ORDERS OF BUSINESS:
+Either implement an autosave (every 1 second asynchronously) or a timeout save based on https://stackoverflow.com/questions/4220126/run-javascript-function-when-user-finishes-typing-instead-of-on-key-up
+Both options would probably work best if there was a stopping force onbeforeunload() event that makes sure it savess

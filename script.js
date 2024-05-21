@@ -4,6 +4,9 @@ const selectedDateCellClass = "selected-day";
 const otherMonthClass = "non-month-day";
 const dateContainer = document.getElementById("date-container");
 const taskContainer = document.getElementById("task-container");
+const monthTitle = document.getElementById("month-title");
+const monthArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const autosaveTimerMS = 5000;
 
 const taskClass = "task";
 const taskIconClass = "task-icon";
@@ -15,6 +18,8 @@ const checkedTaskIconClass = "checked-task-icon";
 let firstDatetimeInGrid = new Date();
 let globalSelectedDatetime = new Date();
 let currentMonth = -1;
+let currentYear = -1;
+let initialzed = false;
 
 function addTask() {
     let newTask = document.createElement("div");
@@ -29,23 +34,53 @@ function addTask() {
     taskContent.placeholder = "Add text here";
     taskContent.contentEditable = true;
 
-    taskIcon.addEventListener("click", function(e) { checkTask(e.target.parentElement); }, false);
-    taskDeleteIcon.addEventListener("click", function(e) { deleteTask(e.target.parentElement); }, false);
+    taskIcon.setAttribute('onclick', 'checkTask(this)');
+    taskDeleteIcon.setAttribute('onclick', 'deleteTask(this)');
 
     newTask.appendChild(taskIcon);
     newTask.appendChild(taskContent);
     newTask.appendChild(taskDeleteIcon);
 
     taskContainer.appendChild(newTask);
+    saveTaskData(globalSelectedDatetime);
 }
 
-function checkTask(taskElement) {
+function checkTask(taskIconElement) {
+    let taskElement = taskIconElement.parentElement;
     taskElement.classList.toggle(checkedTaskClass);
     taskElement.children[0].classList.toggle(checkedTaskIconClass);
+    saveTaskData(globalSelectedDatetime);
 } 
 
-function deleteTask(taskElement) {
+function deleteTask(taskDeleteIconElement) {
+    let taskElement = taskDeleteIconElement.parentElement;
     taskElement.remove();
+    saveTaskData(globalSelectedDatetime);
+}
+
+function autosave() {
+    saveTaskData(globalSelectedDatetime);
+    
+    setTimeout(autosave, autosaveTimerMS);
+}
+
+function saveTaskData(datetime) {
+    localStorage.setItem(makeSaveKey(datetime), taskContainer.innerHTML);
+}
+
+function loadTaskData(datetime) {
+    let data = localStorage.getItem(makeSaveKey(datetime));
+    if (data === null) {
+        taskContainer.innerHTML = "";
+    }
+    else {
+        taskContainer.innerHTML = localStorage.getItem(makeSaveKey(datetime));
+    }
+}
+
+function makeSaveKey(datetime) {
+    let saveKey = "" + datetime.getFullYear() + "-" + datetime.getMonth() + "-" + datetime.getDate();
+    return saveKey;
 }
 
 dateContainer.addEventListener("click", function(e) {
@@ -67,6 +102,15 @@ dateContainer.addEventListener("click", function(e) {
 function selectDate(selectedDatetime) {
     let oldCell = getCellByDatetime(globalSelectedDatetime);
     oldCell.classList.remove(selectedDateCellClass);
+
+    if (initialzed) {
+        saveTaskData(globalSelectedDatetime);
+    }
+    else {
+        loadTaskData(globalSelectedDatetime);
+        autosave();
+        initialzed = true;
+    }
     globalSelectedDatetime.setTime(selectedDatetime.getTime());
 
     if (selectedDatetime.getMonth() !== currentMonth) {
@@ -76,10 +120,14 @@ function selectDate(selectedDatetime) {
 
     let selectedCell = getCellByDatetime(selectedDatetime);
     selectedCell.classList.add(selectedDateCellClass);
+
+    loadTaskData(globalSelectedDatetime);
 }
 
 function updateGrid(selectedDatetime) {
     currentMonth = selectedDatetime.getMonth();
+    currentYear = selectedDatetime.getFullYear();
+    monthTitle.innerHTML = "" + monthArray[currentMonth] + " " + currentYear;
 
     firstDatetimeInGrid.setTime(findFirstSunday(selectedDatetime).getTime());
 
@@ -171,6 +219,4 @@ function coordinatesToGridNumber(week, day) {
 }
 
 let today = new Date();
-selectDate(today);
-today.setDate(today.getDate() + 13);
 selectDate(today);
