@@ -7,6 +7,8 @@ const taskContainer = document.getElementById("task-container");
 const monthTitle = document.getElementById("month-title");
 const monthArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const autosaveTimerMS = 5000;
+const previousMonthButton = document.getElementById("previous-month-button");
+const nextMonthButton = document.getElementById("next-month-button");
 
 const taskClass = "task";
 const taskIconClass = "task-icon";
@@ -122,6 +124,29 @@ function selectDate(selectedDatetime) {
     selectedCell.classList.add(selectedDateCellClass);
 
     loadTaskData(globalSelectedDatetime);
+}
+
+previousMonthButton.addEventListener("click", function(e) {
+    if (currentMonth == 0) {
+        selectMonth(11, currentYear - 1);
+    }
+    else {
+        selectMonth(currentMonth - 1, currentYear);
+    }
+}, false);
+
+nextMonthButton.addEventListener("click", function(e) {
+    if (currentMonth == 11) {
+        selectMonth(0, currentYear + 1);
+    }
+    else {
+        selectMonth(currentMonth + 1, currentYear);
+    }
+}, false);
+
+function selectMonth(monthIndex, fullYear) {
+    let firstOfTheMonth = new Date(fullYear, monthIndex, 1);
+    selectDate(firstOfTheMonth);
 }
 
 function updateGrid(selectedDatetime) {

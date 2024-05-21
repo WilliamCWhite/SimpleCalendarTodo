@@ -53,3 +53,7 @@ saving data: have to set item based on a time code
 ORDERS OF BUSINESS:
 Either implement an autosave (every 1 second asynchronously) or a timeout save based on https://stackoverflow.com/questions/4220126/run-javascript-function-when-user-finishes-typing-instead-of-on-key-up
 Both options would probably work best if there was a stopping force onbeforeunload() event that makes sure it savess
+ehh just did a basic autosave
+
+Now I want to make a popup when you click on the month
+Actually first just need to make next and previous month methods        
