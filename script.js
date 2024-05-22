@@ -1,16 +1,19 @@
-const weekClassName = "week";
-const dayClassName = "day";
-const selectedDateCellClass = "selected-day";
-const otherMonthClass = "non-month-day";
 const dateContainer = document.getElementById("date-container");
 const taskContainer = document.getElementById("task-container");
 const monthTitle = document.getElementById("month-title");
-const monthArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-const autosaveTimerMS = 5000;
 const previousMonthButton = document.getElementById("previous-month-button");
 const nextMonthButton = document.getElementById("next-month-button");
 const bodyElement = document.getElementById("body");
 const everythingContainer = document.getElementById("everything-container");
+const blurPopup = document.getElementById("blur-popup");
+const monthSelectorPopup = document.getElementById("month-selector-popup");
+const previousYearButton = document.getElementById("previous-year-button");
+const nextYearButton = document.getElementById("next-year-button");
+const yearTitle = document.getElementById("year-title");
+const monthCellContainer = document.getElementById("month-cell-container");
+
+const monthArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const autosaveTimerMS = 5000;
 
 const taskClass = "task";
 const taskIconClass = "task-icon";
@@ -18,6 +21,16 @@ const taskContentClass = "task-content";
 const taskDeleteIconClass = "task-delete-icon";
 const checkedTaskClass = "checked-task";
 const checkedTaskIconClass = "checked-task-icon";
+const hiddenPopupClass = "hidden-popup";
+
+const weekClassName = "week";
+const dayClassName = "day";
+const selectedDateCellClass = "selected-day";
+const otherMonthClass = "non-month-day";
+
+const monthCellClass = "month-cell";
+const monthRowClass = "month-row";
+const selectedMonthCellClass = "selected-month-cell";
 
 
 let firstDatetimeInGrid = new Date();
@@ -25,6 +38,74 @@ let globalSelectedDatetime = new Date();
 let currentMonth = -1;
 let currentYear = -1;
 let initialzed = false;
+let justSwitchedMonth = false;
+let monthSelectorYear = currentYear;
+
+monthCellContainer.addEventListener("click", function(e) {
+    if (e.target.classList[0] != monthCellClass) return;
+
+    let monthRowString = e.target.parentElement.classList[1];
+    let monthColumnString = e.target.classList[1];
+
+    let rowNumber = +monthRowString.slice(monthRowClass.length);
+    let columnNumber = +monthColumnString.slice(monthCellClass.length);
+
+    let selectedMonthIndex = (rowNumber - 1) * 3 + columnNumber - 1;
+
+
+    selectMonth(selectedMonthIndex, monthSelectorYear);
+    toggleMonthSelectorPopup();
+
+}, false);
+
+previousYearButton.addEventListener("click", function(e) {
+    monthSelectorYear--;
+    yearTitle.innerHTML = monthSelectorYear;
+    updateMonthSelectorGrid();
+}, false);
+
+nextYearButton.addEventListener("click", function(e) {
+    monthSelectorYear++;
+    yearTitle.innerHTML = monthSelectorYear;
+    updateMonthSelectorGrid();
+}, false);
+
+function updateMonthSelectorGrid() {
+
+    let monthIndex = 0;
+    for (let i = 1; i <= 4; i++) {
+        for (let j = 1; j <= 3; j++) {
+            let monthCell = selectMonthCell(i, j);
+            if (currentMonth === monthIndex && currentYear === monthSelectorYear) {
+                monthCell.classList.add(selectedMonthCellClass);
+            }
+            else {
+                monthCell.classList.remove(selectedMonthCellClass);
+            }
+            monthIndex++;
+        }
+    }
+}
+
+function selectMonthCell(row, column) {
+    return document.querySelector(`.${monthRowClass}${row}>.${monthCellClass}${column}`);
+}
+
+function toggleMonthSelectorPopup() {
+    blurPopup.classList.toggle(hiddenPopupClass);
+    monthSelectorPopup.classList.toggle(hiddenPopupClass);
+    monthSelectorYear = currentYear;
+    yearTitle.innerHTML = monthSelectorYear;
+    updateMonthSelectorGrid();
+}
+
+monthTitle.addEventListener("click", function(e) {
+    toggleMonthSelectorPopup();
+}, false);
+
+blurPopup.addEventListener("click", function(e) {
+    toggleMonthSelectorPopup();
+}, false);
 
 function addTask() {
     let newTask = document.createElement("div");
@@ -74,12 +155,13 @@ function saveTaskData(datetime) {
 }
 
 function loadTaskData(datetime) {
-    let data = localStorage.getItem(makeSaveKey(datetime));
+    let saveKey = makeSaveKey(datetime);
+    let data = localStorage.getItem(saveKey);
     if (data === null) {
         taskContainer.innerHTML = "";
     }
     else {
-        taskContainer.innerHTML = localStorage.getItem(makeSaveKey(datetime));
+        taskContainer.innerHTML = data;
     }
 }
 
@@ -90,7 +172,7 @@ function makeSaveKey(datetime) {
 
 dateContainer.addEventListener("click", function(e) {
     
-    if (e.target.classList[0] !== "day") return;
+    if (e.target.classList[0] !== dayClassName) return;
 
     let dayString = e.target.classList[1];
     let weekString = e.target.parentElement.classList[1];
@@ -105,8 +187,15 @@ dateContainer.addEventListener("click", function(e) {
 }, false);
 
 function selectDate(selectedDatetime) {
-    let oldCell = getCellByDatetime(globalSelectedDatetime);
-    oldCell.classList.remove(selectedDateCellClass);
+
+    if (!justSwitchedMonth) {
+        let oldCell = getCellByDatetime(globalSelectedDatetime);
+        oldCell.classList.remove(selectedDateCellClass);
+    }
+    else {
+        justSwitchedMonth = false;
+    }
+    
 
     if (initialzed) {
         saveTaskData(globalSelectedDatetime);
@@ -116,25 +205,20 @@ function selectDate(selectedDatetime) {
         autosave();
         initialzed = true;
     }
-    globalSelectedDatetime.setTime(selectedDatetime.getTime());
+    
 
-    if (selectedDatetime.getMonth() !== currentMonth) {
+    if (selectedDatetime.getMonth() !== currentMonth || selectedDatetime.getFullYear() !== currentYear) {
+        justSwitchedMonth = true;
         updateGrid(selectedDatetime);
         return;
     }
 
+    globalSelectedDatetime.setTime(selectedDatetime.getTime());
+    
     let selectedCell = getCellByDatetime(selectedDatetime);
     selectedCell.classList.add(selectedDateCellClass);
-
     loadTaskData(globalSelectedDatetime);
 }
-
-monthTitle.addEventListener("click", function(e) {
-    console.log("month title clicked");
-    let popupElement = document.createElement("div");
-    popupElement.classList.add("blur-popup");
-    everythingContainer.insertAdjacentElement('afterend', popupElement);
-}, false);
 
 previousMonthButton.addEventListener("click", function(e) {
     if (currentMonth == 0) {

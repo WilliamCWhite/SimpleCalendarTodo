@@ -13,6 +13,14 @@
         min-width: calc(0.6 * 800px);
         min-height: calc(0.6 * 800px * 9/16);
     }
+    .month-selection-popup {
+        width: 24.3vw;
+        height: calc(5/4 * 24.3vw);
+        max-width: calc(0.243 * 1600px);
+        max-height: calc(0.243 * 1600px * 5/4);
+        min-width: calc(0.243 * 800px);
+        min-height: calc(0.243 * 800px * 5/4);
+    }
     :root {
         --gutter: clamp(5.25px, calc(9/16 * 60vw * 1/60), 10px);
     }
@@ -26,6 +34,14 @@
         max-width: calc(0.6 * 900px * 16/9);
         min-height: calc(0.6 * 450px);
         min-width: calc(0.6 * 450px * 16/9);
+    }
+    .month-selection-popup {
+        height: 54vh;
+        width: calc(4/5 * 54vh);
+        max-height: calc(0.54 * 900px);
+        max-width: calc(0.54 * 900px * 4/5);
+        min-height: calc(0.54 * 450px);
+        min-width: calc(0.54 * 450px * 4/5);
     }
     :root {
         --gutter: clamp(5.25px, calc(60vh * 1/60), 10px);
@@ -274,13 +290,14 @@
     background-color: blue;
 }
 
-.blur-popup {
+.universal-blur-popup {
     position: fixed;
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.5);
     top: 0;
     left: 0;
+    z-index: 2;
 }
 
 div.hidden-popup {
@@ -289,11 +306,70 @@ div.hidden-popup {
     z-index: -1;
 }
 
-.month-popup {
-    position: fixed;
-    width: 50vw;
-    height: 30vh;
+.month-selection-popup {
     background-color: white;
-    top: 35vh;
-    left: 25vw;
+    z-index: 3;
+    position: absolute;
+    border-radius: var(--four-gutter);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--double-gutter);
+}
+.year-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 var(--gutter);
+    align-items: center;
+    font-size: var(--three-gutter);
+    font-weight: 600;
+}
+
+.month-selection-divider {
+    background-color: gray;
+    height: var(--gutter);
+    width: calc(100% - var(--gutter));
+    border-radius: var(--gutter);
+    margin: var(--gutter) 0;
+}
+
+.month-selection-container {
+    flex-grow: 1;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: var(--gutter);
+}
+
+.month-row {
+    flex-grow: 1;
+    width: 100%;
+    gap: var(--gutter);
+    display: flex;
+    flex-direction: row;
+    height: calc(100% - 3 * var(--gutter) / 4);
+}
+
+.month-cell {
+    flex-grow: 1;
+    height: 100%;
+    background-color: lightgray;
+    border-radius: var(--three-gutter);
+    width: calc(100% - 2 * var(--gutter) / 3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.month-cell-text {
+    font-size: calc(2.5 * var(--gutter));
+    font-weight: 700;
+    pointer-events: none;
+}
+
+.selected-month-cell {
+    background-color: blue;
+    color: white;
 }
