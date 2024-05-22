@@ -12,9 +12,9 @@
         <div class="app-container">
             <div class="calendar-section">
                 <div class="month-header">
-                    <div class="month-button previous-month-button" id="previous-month-button">X</div>
+                    <div class="month-button previous-month-button flip-x" id="previous-month-button">➜</div>
                     <div class="month-title" id="month-title">March 2024</div>
-                    <div class="month-button next-month-button" id="next-month-button">X</div>
+                    <div class="month-button next-month-button" id="next-month-button">➜</div>
                 </div>
                 <div class="month-week-divider"></div>
                 <div class="week-header">
@@ -213,26 +213,25 @@
 
             </div>
             <div class="todo-section">
-                <div class="day-title">Monday, March 24th</div>
+                <div class="day-title" id="day-title"></div>
                 <div class="add-task-button" onclick="addTask()">
-                    <div class="add-task-icon">+</div>
-                    <div class="add-task-text">Add Task</div>
+                    <div class="add-task-part">+</div>
+                    <div class="add-task-part">Add Task</div>
                 </div>
                 <div class="gradient-positioner">
                     <div class="gradient"></div>
                 </div>
                 
-                <div class="task-section" id="task-container">
-                </div> 
+                <div class="task-section" id="task-container"></div> 
                 <div class="bottom-gradient-positioner">
                     <div class="bottom-gradient"></div>
                 </div>
             </div>
             <div class="month-selection-popup hidden-popup" id="month-selector-popup">
                 <div class="year-header">
-                    <div class="previous-year-button year-button" id="previous-year-button">X</div>
+                    <div class="previous-year-button year-button flip-x" id="previous-year-button">➜</div>
                     <div class="year-title" id="year-title">2024</div>
-                    <div class="next-year-button year-button" id="next-year-button">X</div>
+                    <div class="next-year-button year-button" id="next-year-button">➜</div>
                 </div>
                 <div class="month-selection-divider"></div>
                 <div class="month-selection-container" id="month-cell-container">

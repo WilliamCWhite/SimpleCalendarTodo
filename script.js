@@ -11,8 +11,10 @@ const previousYearButton = document.getElementById("previous-year-button");
 const nextYearButton = document.getElementById("next-year-button");
 const yearTitle = document.getElementById("year-title");
 const monthCellContainer = document.getElementById("month-cell-container");
+const taskDayTitle = document.getElementById("day-title");
 
 const monthArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const weekdayArray = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const autosaveTimerMS = 5000;
 
 const taskClass = "task";
@@ -31,6 +33,8 @@ const otherMonthClass = "non-month-day";
 const monthCellClass = "month-cell";
 const monthRowClass = "month-row";
 const selectedMonthCellClass = "selected-month-cell";
+
+const lastInTaskSection = document.getElementById("last-in-task-section");
 
 
 let firstDatetimeInGrid = new Date();
@@ -117,7 +121,6 @@ function addTask() {
     taskIcon.classList.add(taskIconClass);
     taskContent.classList.add(taskContentClass);
     taskDeleteIcon.classList.add(taskDeleteIconClass);
-    taskContent.placeholder = "Add text here";
     taskContent.contentEditable = true;
 
     taskIcon.setAttribute('onclick', 'checkTask(this)');
@@ -218,6 +221,7 @@ function selectDate(selectedDatetime) {
     let selectedCell = getCellByDatetime(selectedDatetime);
     selectedCell.classList.add(selectedDateCellClass);
     loadTaskData(globalSelectedDatetime);
+    taskDayTitle.innerHTML = parseDatetimeIntoString(globalSelectedDatetime);
 }
 
 previousMonthButton.addEventListener("click", function(e) {
@@ -335,6 +339,18 @@ function gridNumberToDay(gridNumber) {
 
 function coordinatesToGridNumber(week, day) {
     return ((week - 1) * 7) + day;
+}
+
+function parseDatetimeIntoString(datetime) {
+    let options = {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric'
+    }
+    let output = datetime.toLocaleDateString(undefined, options); 
+    console.log(output);
+    return output;
+
 }
 
 let today = new Date();
