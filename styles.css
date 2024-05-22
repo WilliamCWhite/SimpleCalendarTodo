@@ -281,6 +281,7 @@
     height: var(--double-gutter);
     background: linear-gradient(180deg, rgba(255,255,255,1), rgba(255,255,255,0));
     width: 100%;
+    pointer-events: none;
 }
 
 .bottom-gradient-positioner {
@@ -296,6 +297,7 @@
     height: var(--three-gutter);
     background: linear-gradient(0deg, rgba(255,255,255,1), rgba(255,255,255,0));
     width: 100%;
+    pointer-events: none;
 }
 
 .task-section {
